@@ -1,0 +1,110 @@
+.header,
+.type-picker {
+    display: flex;
+    justify-content: space-between;
+    padding-left: 20px;
+    padding-right: 20px;
+    border-top: 1.5px solid #ccc;
+}
+
+.header>p,
+.today,
+.type-button,
+.type-label {
+    color: dodgerblue;
+}
+
+.month {
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.arrow {
+    background-color: transparent;
+    cursor: pointer;
+    border: none;
+    color: silver;
+    font-size: 30px;
+    user-select: none;
+}
+
+.day {
+    border: 1.5px solid #ccc;
+    cursor: default;
+    height: calc(400px/7);
+}
+
+.day:hover {
+    background-color: rgb(221, 239, 255);
+}
+
+.days {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    table-layout: fixed;
+    margin-top: 0.1em;
+    user-select: none;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 20px;
+    text-align: center;
+}
+
+.weekdays {
+    color: silver;
+    padding-bottom: 5px;
+}
+
+.date-label {
+    pointer-events: none;
+    display: block;
+    border-radius: 5px;
+    border: 2px solid dodgerblue;
+    text-align: center;
+    width: 40%;
+}
+
+.selected-day,
+.selected-day:hover {
+    background-color: dodgerblue;
+    color: white;
+}
+
+.other-month {
+    color: silver;
+}
+
+.type-picker {
+    padding-top: 10px;
+    padding-bottom: 15px;
+}
+
+.type-radio {
+    opacity: 0;
+    position: fixed;
+}
+
+.type-label {
+    padding-left: 10px;
+    padding-right: 10px;
+    user-select: none;
+}
+
+.type-radio:checked+.type-label {
+    background-color: rgb(221, 239, 255);
+    border-radius: 5px;
+}
+
+.date-labels {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+
+.separator {
+    font-size: 30px;
+    margin-left: 5px;
+    margin-right: 5px;
+    user-select: none;
+}
