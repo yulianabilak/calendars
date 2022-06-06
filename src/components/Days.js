@@ -3,12 +3,11 @@ import '../css/calendar.css'
 
 function Days(props) {
     const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
-    const firstDayOfMonth = new Date(props.selectedMonth.year, props.selectedMonth.month, 1);
+    const monthToRender = props.monthToRender.month;
+    const firstDayOfMonth = new Date(props.monthToRender.year, monthToRender, 1);
     const firstWeekDay = firstDayOfMonth.getDay();
-    const selectedDay = props.selectedDate.date.getDate();
-    const daysMonth = props.selectedMonth.month;
-    const selectedDayMonth = props.selectedDate.date.getMonth();
-    const selected = props.selectedDate.isSelected;
+    const dateFrom = props.selectedRanges.dateFrom;
+    const dateTo = props.selectedRanges.dateTo;
 
     let subarr = []
     const dates = []
@@ -20,7 +19,7 @@ function Days(props) {
             subarr = []
         }
         if (i >= firstWeekDay) {
-            subarr.push(new Date(props.selectedMonth.year, props.selectedMonth.month, cnt));
+            subarr.push(new Date(props.monthToRender.year, monthToRender, cnt));
             cnt++;
         }
         else {
@@ -31,27 +30,72 @@ function Days(props) {
 
     function setClassNames(day) {
         let className = 'day'
-        if (day.getDate() === new Date().getDate() && day.getMonth() === new Date().getMonth()) {
+        if (day.getDate() === new Date().getDate() && day.getMonth() === new Date().getMonth() && day.getFullYear() === new Date().getFullYear()) {
             className += ' today'
         }
-        if (day.getMonth() !== daysMonth) {
+        if (day.getMonth() !== monthToRender) {
             className += ' other-month'
         }
-        if (day.getDate() === selectedDay && day.getMonth() === selectedDayMonth && props.selectedMonth.month === selectedDayMonth && selected) {
+        if (day.getDate() === dateFrom.getDate() && day.getMonth() === dateFrom.getMonth() && day.getFullYear() === dateFrom.getFullYear() && monthToRender === dateFrom.getMonth()) {
             className += ' selected-day'
+        }
+        if (dateTo && day.getDate() === dateTo.getDate() && day.getMonth() === dateTo.getMonth() && day.getFullYear() === dateTo.getFullYear() && monthToRender === dateTo.getMonth()) {
+            className += ' selected-day'
+        }
+        if (dateTo && day > dateFrom && day < dateTo) {
+            className += ' in-range'
         }
         return className;
     }
 
-    /*function handleDayClick(day) {
-        if (day.getMonth() !== props.selectedMonth.month) {
-            props.setSelectedMonth({ month: day.getMonth(), year: day.getFullYear })
+    const handleClick = (day) => {
+        if (props.type === 'SINGLE' || dateFrom > day || dateTo) {
+            props.setSelectedRanges(
+                {
+                    dateFrom: day,
+                    dateTo: null
+                }
+            )
         }
-        props.setSelectedDate({
-            date: new Date(day.getFullYear(), day.getMonth(), day.getDate()),
-            isSelected: true
-        })
-    }*/
+        else  {
+            props.setSelectedRanges(
+                {
+                    dateFrom: dateFrom,
+                    dateTo: day
+                }
+            )
+        }
+        
+        if(day.getMonth() !== monthToRender) {
+            props.setMonthToRender({
+                month: day.getMonth(),
+                year: day.getFullYear()
+            })
+        }
+    }
+
+    const handleHover = (e, day) => {
+        if (props.type === 'SINGLE') return;
+        if (dateTo) return;
+        if (day > dateFrom) {
+            let el = e.target;
+            while (el.innerText != dateFrom.getDate()) {
+                el.className = 'day in-range'
+                if (!el.previousElementSibling) {
+                    el = el.parentNode.previousElementSibling.lastChild;
+                }
+                else el = el.previousElementSibling;
+            }
+            el = e.target;
+            while (el.classList.contains('in-range')) {
+                el.className = setClassNames(day)
+                if (!el.nextElementSibling) {
+                    el = el.parentNode.nextElementSibling.firstChild;
+                }
+                else el = el.nextElementSibling;
+            }
+        }
+    }
 
     return (
         <table className='days'>
@@ -65,20 +109,8 @@ function Days(props) {
                     <tr>
                         {week.map(
                             day =>
-                                <td onClick={() => {
-                                    props.setSelectedDate(
-                                        {
-                                            date: new Date(day.getFullYear(), day.getMonth(), day.getDate()),
-                                            isSelected: true
-                                        }
-                                    )
-                                    if(day.getMonth() !== props.selectedMonth.month) {
-                                        props.setSelectedMonth({
-                                            month: day.getMonth(),
-                                            year: day.getFullYear()
-                                        })
-                                    }
-                            }}
+                                <td onClick={() => handleClick(day)}
+                                onMouseOver={(e) => handleHover(e, day)}
                         className={setClassNames(day)}>
                         {day.getDate()}
                     </td>

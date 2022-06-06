@@ -5,7 +5,7 @@ function Header(props) {
     const months = ['JANUARY', 'FEBRUARY', 'MARCH', 'APRIL', 'MAY', 'JUNE', 'JULY', 'AUGUST', 'SEPTEMBER', 'OCTOBER', 'NOVEMBER', 'DECEMBER']
 
     function handleLeftClick() {
-        props.setSelectedMonth(
+        props.setMonthToRender(
             {
                 month: props.month === 0 ? 11 : props.month - 1,
                 year: props.month === 0 ? props.year - 1 : props.year
@@ -14,7 +14,7 @@ function Header(props) {
     }
 
     function handleRightClick() {
-        props.setSelectedMonth(
+        props.setMonthToRender(
             {
                 month: props.month === 11 ? 0 : props.month + 1,
                 year: props.month === 11 ? props.year + 1 : props.year

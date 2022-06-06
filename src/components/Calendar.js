@@ -6,26 +6,24 @@ import { Labels } from './Labels'
 import '../css/calendar.css'
 
 function Calendar(props) {
-    const [selectedDate, setSelectedDate] = useState(
+    const [selectedRanges, setSelectedRanges] = useState(
         {
-            date: new Date(),
-            isSelected: true
+            dateFrom: new Date(),
+            dateTo: null
         }
     );
-    const [selectedMonth, setSelectedMonth] = useState(
+    const [monthToRender, setMonthToRender] = useState(
         {
             month: new Date().getMonth(),
             year: new Date().getFullYear()
         }
     );
-    
-    const label = `${selectedDate.date.getDate()}-${selectedDate.date.getMonth()+1}-${selectedDate.date.getFullYear()}`;
 
     return (
         <div className='calendar'>
-            <Labels calendarType={props.type} selected={selectedDate.isSelected} label={label}/>
-            <Header month={selectedMonth.month} year={selectedMonth.year} setSelectedMonth={setSelectedMonth}/>
-            <Days selectedDate={selectedDate} setSelectedDate={setSelectedDate} selectedMonth={selectedMonth} setSelectedMonth={setSelectedMonth}/>
+            <Labels calendarType={props.type} selectedRanges={selectedRanges}/>
+            <Header month={monthToRender.month} year={monthToRender.year} setMonthToRender={setMonthToRender}/>
+            <Days selectedRanges={selectedRanges} setSelectedRanges={setSelectedRanges} monthToRender={monthToRender} setMonthToRender={setMonthToRender} type={props.type}/>
         </div>
     );        
 }
