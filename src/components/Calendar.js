@@ -59,7 +59,7 @@ function Calendar(props) {
         }
     }
     dates.push(subarr)
-    //const [daysToRender, setDaysToRender] = useState(dates)
+    clearHoverStyles();
 
     const changeSelectedDays = (day) => {
         if (props.type === 'SINGLE' || dateFrom > day.date || dateTo) {
@@ -90,28 +90,44 @@ function Calendar(props) {
     const changeHoveredDays = (day) => {
         if (props.type === 'SINGLE') return;
         if (dateTo) return;
+        const flatDays = [].concat(...dates);
+        let i = flatDays.findIndex(flatDay => day.date === flatDay.date);
         if (day.date > dateFrom) {
-            console.log('change hovered')
-            //let dayCell = day;
-            //while (dayCell.date.getDate() != dateFrom.getDate()) {
-                day.isHovered = true
-                
-                //if (!el.previousElementSibling) {
-                //    el = el.parentNode.previousElementSibling.lastChild;
-                //}
-                //else el = el.previousElementSibling;
-            //}
-            //el = e.target;
-            //while (el.classList.contains('in-range')) {
-            //    el.className = setClassNames(day)
-            //    if (!el.nextElementSibling) {
-            //        el = el.parentNode.nextElementSibling.firstChild;
-            //    }
-            //    else el = el.nextElementSibling;
-            //}
+            let dayCell = day;
+            while (dayCell.date.getDate() !== dateFrom.getDate()) {
+                document.getElementById('dayidx'+dayCell.date.getTime()).classList.add('in-range');
+                i--;
+                if (i >= 0)
+                    dayCell = flatDays[i];
+            }
+            i = flatDays.findIndex(flatDay => day.date === flatDay.date) + 1;
+            while (i < flatDays.length) {
+                dayCell = flatDays[i++];
+                document.getElementById('dayidx'+dayCell.date.getTime()).classList.remove('in-range');
+            }
+        } else {
+            for (i = 0; i < flatDays.length; i++) {
+                let dayCell = flatDays[i];
+                document.getElementById('dayidx'+dayCell.date.getTime()).classList.remove('in-range');
+            }
         }
     }
-    console.log(dates)
+
+    function clearHoverStyles() {
+        const flatDays = [].concat(...dates);
+        for (let i = 0; i < flatDays.length; i++) {
+            let dayCell = flatDays[i];
+            dayCell.isHovered = false;
+            let dayElem = document.getElementById('dayidx'+dayCell.date.getTime());
+            if (dayElem) {
+                dayElem.classList.remove('in-range');
+                dayElem.classList.remove('selected-day');
+                if (dayCell.date.toDateString() === selectedRanges.dateFrom.toDateString()) {
+                    dayElem.classList.add('selected-day');
+                }
+            }
+        }
+    }
 
     return (
         <div className='calendar'>

@@ -13,8 +13,6 @@ function TypePicker(props) {
             <label htmlFor='single' className='type-label'>SINGLE</label>
             <input type='radio' id='range' name='type' onChange={onChangeValue} value='RANGE' className='type-radio'></input>
             <label htmlFor='range' className='type-label'>RANGE</label>
-            <input type='radio' id='multirange' name='type' onChange={onChangeValue} value='MULTIRANGE' className='type-radio'></input>
-            <label htmlFor='multirange' className='type-label'>MULTIRANGE</label>
         </div>
     );
 }
