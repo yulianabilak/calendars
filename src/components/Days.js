@@ -1,5 +1,6 @@
 import React from 'react'
 import '../css/calendar.css'
+import PropTypes from 'prop-types'
 
 function Days(props) {
     const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
@@ -46,6 +47,12 @@ function Days(props) {
         </tbody>
         </table >
     );
+}
+
+Days.propTypes = {
+    days: PropTypes.arrayOf(PropTypes.object).isRequired,
+    changeSelectedDays: PropTypes.func.isRequired,
+    changeHoveredDays: PropTypes.func
 }
 
 export { Days }

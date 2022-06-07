@@ -1,5 +1,6 @@
 import React from 'react'
 import '../css/calendar.css'
+import PropTypes from 'prop-types'
 
 function TypePicker(props) {
 
@@ -15,6 +16,10 @@ function TypePicker(props) {
             <label htmlFor='range' className='type-label'>RANGE</label>
         </div>
     );
+}
+
+TypePicker.propTypes = {
+    setCalendarType: PropTypes.func.isRequired
 }
 
 export {TypePicker}

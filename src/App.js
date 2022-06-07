@@ -9,7 +9,7 @@ function App() {
     return ( 
       <div className="App">
         <Calendar type={calendarType}></Calendar>
-        <TypePicker calendarType={calendarType} setCalendarType={setCalendarType}/> 
+        <TypePicker setCalendarType={setCalendarType}/> 
       </div>
     );
 }

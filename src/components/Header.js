@@ -1,5 +1,6 @@
 import React from 'react'
 import '../css/calendar.css'
+import PropTypes from 'prop-types'
 
 function Header(props) {
     const months = ['JANUARY', 'FEBRUARY', 'MARCH', 'APRIL', 'MAY', 'JUNE', 'JULY', 'AUGUST', 'SEPTEMBER', 'OCTOBER', 'NOVEMBER', 'DECEMBER']
@@ -32,6 +33,12 @@ function Header(props) {
             <button className='arrow' onClick={handleRightClick}>{'>'}</button>
         </div>
     );
+}
+
+Header.propTypes = {
+    month: PropTypes.number.isRequired,
+    year: PropTypes.number.isRequired,
+    setMonthToRender: PropTypes.func.isRequired
 }
 
 export {Header}

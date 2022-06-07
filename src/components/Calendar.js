@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import {Header} from './Header'
 import {Days} from './Days'
 import { Labels } from './Labels'
+import PropTypes from 'prop-types'
 
 import '../css/calendar.css'
 
@@ -62,6 +63,7 @@ function Calendar(props) {
     clearHoverStyles();
 
     const changeSelectedDays = (day) => {
+        if (props.type !== 'SINGLE' && props.type !== 'RANGE') return;
         if (props.type === 'SINGLE' || dateFrom > day.date || dateTo) {
             setSelectedRanges(
                 {
@@ -70,7 +72,7 @@ function Calendar(props) {
                 }
             )
         }
-        else  {
+        else if (props.type === 'RANGE') {
             setSelectedRanges(
                 {
                     dateFrom: dateFrom,
@@ -88,6 +90,7 @@ function Calendar(props) {
     }
 
     const changeHoveredDays = (day) => {
+        if (props.type !== 'SINGLE' && props.type !== 'RANGE') return;
         if (props.type === 'SINGLE') return;
         if (dateTo) return;
         const flatDays = [].concat(...dates);
@@ -136,6 +139,10 @@ function Calendar(props) {
             <Days days={dates} changeSelectedDays={changeSelectedDays} changeHoveredDays={changeHoveredDays}/>
         </div>
     );        
+}
+
+Calendar.propTypes = {
+    type: PropTypes.oneOf(['SINGLE', 'RANGE']).isRequired
 }
 
 export {Calendar}

@@ -1,12 +1,13 @@
 import React from 'react'
 import '../css/calendar.css'
+import PropTypes from 'prop-types'
 
 function Labels(props) {
     const dateFrom = props.selectedRanges.dateFrom;
     const dateTo = props.selectedRanges.dateTo;
   
     function renderRangeLabels() {
-        if (props.calendarType !== 'SINGLE') {
+        if (props.calendarType === 'RANGE') {
             return (
                 <>
                 <div className='separator'>—</div>
@@ -23,6 +24,14 @@ function Labels(props) {
             {renderRangeLabels()}
         </div>
     );
+}
+
+Labels.propTypes = {
+    calendarType: PropTypes.oneOf(['SINGLE', 'RANGE']).isRequired,
+    selectedRanges: PropTypes.shape({
+        dateFrom: PropTypes.instanceOf(Date).isRequired,
+        dateTo: PropTypes.instanceOf(Date)
+    }).isRequired
 }
 
 export {Labels}
