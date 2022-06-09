@@ -5,21 +5,23 @@ import PropTypes from 'prop-types'
 function Days(props) {
     const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
     
+
     function setClassNames(day) {
         let className = 'day'
         if (day.isSelected) {
             className += ' selected-day'
             return className;
         }
+        if (day.isFromOtherMonth) {
+            className += ' other-month'
+            return className;
+        }
         if (day.isInRange) {
             className += ' in-range'
+            return className;
         }
         if (day.isToday) {
             className += ' today'
-            return className;
-        }
-        if (day.isFromOtherMonth) {
-            className += ' other-month'
         }
         return className;
     }
@@ -36,9 +38,8 @@ function Days(props) {
                     <tr>
                         {week.map(
                             day =>
-                                <td id={'dayidx'+day.date.getTime()} className={setClassNames(day)}
-                                    onClick={() => props.changeSelectedDays(day)}
-                                    onMouseOver={() => props.changeHoveredDays(day)}>
+                                <td className={setClassNames(day)}
+                                    onClick={() => props.changeSelectedDays(day)}>
                                         {day.date.getDate()}
                                 </td>
                         )}
@@ -50,9 +51,9 @@ function Days(props) {
 }
 
 Days.propTypes = {
-    days: PropTypes.arrayOf(PropTypes.object).isRequired,
+    days: PropTypes.array.isRequired,
     changeSelectedDays: PropTypes.func.isRequired,
-    changeHoveredDays: PropTypes.func
+    //changeHoveredDays: PropTypes.func
 }
 
 export { Days }

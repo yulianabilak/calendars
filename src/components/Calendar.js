@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {Header} from './Header'
 import {Days} from './Days'
 import { Labels } from './Labels'
@@ -20,6 +20,15 @@ function Calendar(props) {
         }
     );
     
+    useEffect(() => {
+        if (props.type === 'SINGLE') {
+        setSelectedRanges((prev) => ({
+            dateFrom: prev.dateFrom,
+            dateTo: null
+        }))
+    }
+    }, [props.type])
+
     const firstDayOfMonth = new Date(monthToRender.year, monthToRender.month, 1);
     const firstWeekDay = firstDayOfMonth.getDay()
     const dateFrom = selectedRanges.dateFrom;
@@ -60,11 +69,10 @@ function Calendar(props) {
         }
     }
     dates.push(subarr)
-    clearHoverStyles();
 
     const changeSelectedDays = (day) => {
         if (props.type !== 'SINGLE' && props.type !== 'RANGE') return;
-        if (props.type === 'SINGLE' || dateFrom > day.date || dateTo) {
+        if (props.type === 'SINGLE' || selectedRanges.dateFrom > day.date || selectedRanges.dateTo) {
             setSelectedRanges(
                 {
                     dateFrom: day.date,
@@ -75,7 +83,7 @@ function Calendar(props) {
         else if (props.type === 'RANGE') {
             setSelectedRanges(
                 {
-                    dateFrom: dateFrom,
+                    dateFrom: selectedRanges.dateFrom,
                     dateTo: day.date
                 }
             )
@@ -89,7 +97,7 @@ function Calendar(props) {
         }
     }
 
-    const changeHoveredDays = (day) => {
+    /*const changeHoveredDays = (day) => {
         if (props.type !== 'SINGLE' && props.type !== 'RANGE') return;
         if (props.type === 'SINGLE') return;
         if (dateTo) return;
@@ -114,29 +122,13 @@ function Calendar(props) {
                 document.getElementById('dayidx'+dayCell.date.getTime()).classList.remove('in-range');
             }
         }
-    }
-
-    function clearHoverStyles() {
-        const flatDays = [].concat(...dates);
-        for (let i = 0; i < flatDays.length; i++) {
-            let dayCell = flatDays[i];
-            dayCell.isHovered = false;
-            let dayElem = document.getElementById('dayidx'+dayCell.date.getTime());
-            if (dayElem) {
-                dayElem.classList.remove('in-range');
-                dayElem.classList.remove('selected-day');
-                if (dayCell.date.toDateString() === selectedRanges.dateFrom.toDateString()) {
-                    dayElem.classList.add('selected-day');
-                }
-            }
-        }
-    }
+    }*/
 
     return (
         <div className='calendar'>
             <Labels calendarType={props.type} selectedRanges={selectedRanges}/>
             <Header month={monthToRender.month} year={monthToRender.year} setMonthToRender={setMonthToRender}/>
-            <Days days={dates} changeSelectedDays={changeSelectedDays} changeHoveredDays={changeHoveredDays}/>
+            <Days days={dates} changeSelectedDays={changeSelectedDays}/>
         </div>
     );        
 }
